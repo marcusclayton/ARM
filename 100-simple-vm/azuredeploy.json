@@ -1,0 +1,173 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "1234vmsType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_ZRS",
+                "Standard_GRS",
+                "Standard_RAGRS",
+                "Premium_LRS"
+            ]
+        },
+        "myvm001Name": {
+            "type": "string",
+            "minLength": 1
+        },
+        "myvm001AdminUserName": {
+            "type": "string",
+            "minLength": 1
+        },
+        "myvm001AdminPassword": {
+            "type": "securestring"
+        },
+        "myvm001WindowsOSVersion": {
+            "type": "string",
+            "defaultValue": "2012-R2-Datacenter",
+            "allowedValues": [
+                "2008-R2-SP1",
+                "2012-Datacenter",
+                "2012-R2-Datacenter",
+                "Windows-Server-Technical-Preview"
+            ]
+        }
+    },
+    "variables": {
+        "1234vmsName": "[concat('1234vms', uniqueString(resourceGroup().id))]",
+        "testvnet01Prefix": "10.0.0.0/16",
+        "testvnet01Subnet1Name": "Subnet-1",
+        "testvnet01Subnet1Prefix": "10.0.0.0/24",
+        "testvnet01Subnet2Name": "Subnet-2",
+        "testvnet01Subnet2Prefix": "10.0.1.0/24",
+        "myvm001ImagePublisher": "MicrosoftWindowsServer",
+        "myvm001ImageOffer": "WindowsServer",
+        "myvm001OSDiskName": "myvm001OSDisk",
+        "myvm001VmSize": "Standard_D2_v2",
+        "myvm001VnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'testvnet01')]",
+        "myvm001SubnetRef": "[concat(variables('myvm001VnetID'), '/subnets/', variables('testvnet01Subnet1Name'))]",
+        "myvm001StorageAccountContainerName": "vhds",
+        "myvm001NicName": "[concat(parameters('myvm001Name'), 'NetworkInterface')]"
+    },
+    "resources": [
+        {
+            "name": "[variables('1234vmsName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "1234vms"
+            },
+            "properties": {
+                "accountType": "[parameters('1234vmsType')]"
+            }
+        },
+        {
+            "name": "testvnet01",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "testvnet01"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('testvnet01Prefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('testvnet01Subnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('testvnet01Subnet1Prefix')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('testvnet01Subnet2Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('testvnet01Subnet2Prefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[variables('myvm001NicName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', 'testvnet01')]"
+            ],
+            "tags": {
+                "displayName": "myvm001Nic"
+            },
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[variables('myvm001SubnetRef')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[parameters('myvm001Name')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('1234vmsName'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('myvm001NicName'))]"
+            ],
+            "tags": {
+                "displayName": "myvm001"
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('myvm001VmSize')]"
+                },
+                "osProfile": {
+                    "computerName": "[parameters('myvm001Name')]",
+                    "adminUsername": "[parameters('myvm001AdminUsername')]",
+                    "adminPassword": "[parameters('myvm001AdminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('myvm001ImagePublisher')]",
+                        "offer": "[variables('myvm001ImageOffer')]",
+                        "sku": "[parameters('myvm001WindowsOSVersion')]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "myvm001OSDisk",
+                        "vhd": {
+                            "uri": "[concat('https://', variables('1234vmsName'), '.blob.core.windows.net/', variables('myvm001StorageAccountContainerName'), '/', variables('myvm001OSDiskName'), '.vhd')]"
+                        },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('myvm001NicName'))]"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {
+    }
+}
