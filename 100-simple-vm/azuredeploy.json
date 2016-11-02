@@ -32,7 +32,7 @@
         "2016-Datacenter-with-Containers"
       ]
     },
-      "pip-vm001DnsName": {
+      "pipvm001DnsName": {
           "type": "string",
           "minLength": 1
       }
@@ -186,7 +186,7 @@
           "properties": {
               "publicIPAllocationMethod": "Dynamic",
               "dnsSettings": {
-                  "domainNameLabel": "[parameters('pip-vm001DnsName')]"
+                  "domainNameLabel": "[parameters('pipvm001DnsName')]"
               }
           }
       }
