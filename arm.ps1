@@ -1,5 +1,5 @@
 #Check Module Path: Before
-write-verbose "$($env:PSModulePath.Split(';'))"
+Write-Host "$($env:PSModulePath.Split(';'))" -ForegroundColor Green
 
 $azure1 = ";" + "C:\Program Files (x86)\Microsoft SDKs\Azure\PowerShell\ResourceManager\AzureResourceManager"
 $azure2 = ";" + "C:\Program Files (x86)\Microsoft SDKs\Azure\PowerShell\Storage"
@@ -8,8 +8,7 @@ $azure3 = ";" + "C:\Program Files (x86)\Microsoft SDKs\Azure\PowerShell\ServiceM
 $env:PSModulePath=$env:PSModulePath+"$azure1"+"$azure2"+"$azure3"
 
 #Check Module Path: After
-write-verbose "$($env:PSModulePath.Split(';'))"
+Write-Host "$($env:PSModulePath.Split(';'))" -ForegroundColor Green
 
-Get-AzureRmResourceGroup
 $groups = Get-AzureRmResourceGroup
-write-verbose "$($groups.count)"
+Write-Host "$($groups.count)" -ForegroundColor Cyan
