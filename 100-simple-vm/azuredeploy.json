@@ -17,6 +17,10 @@
       "type": "string",
       "minLength": 1
     },
+    "uniqueprefix": {
+      "type": "string",
+      "minLength": 1
+    },
     "myvm001AdminUserName": {
       "type": "string",
       "minLength": 1
@@ -38,7 +42,7 @@
       }
   },
   "variables": {
-    "1432vmsName": "[concat('1432vms', uniqueString(resourceGroup().id))]",
+    "1432vmsName": "[concat(parameters('uniqueprefix'), uniqueString(resourceGroup().id))]",
     "testvnet01Prefix": "10.0.0.0/16",
     "testvnet01Subnet1Name": "Subnet-1",
     "testvnet01Subnet1Prefix": "10.0.0.0/24",
@@ -47,7 +51,7 @@
     "myvm001ImagePublisher": "MicrosoftWindowsServer",
     "myvm001ImageOffer": "WindowsServer",
     "myvm001OSDiskName": "myvm001OSDisk",
-    "myvm001VmSize": "Basic_A0",
+    "myvm001VmSize": "Basic_A1",
     "myvm001VnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'testvnet01')]",
     "myvm001SubnetRef": "[concat(variables('myvm001VnetID'), '/subnets/', variables('testvnet01Subnet1Name'))]",
     "myvm001StorageAccountContainerName": "vhds",
