@@ -47,7 +47,7 @@
     "myvm001ImagePublisher": "MicrosoftWindowsServer",
     "myvm001ImageOffer": "WindowsServer",
     "myvm001OSDiskName": "myvm001OSDisk",
-    "myvm001VmSize": "Standard_D2_v2",
+    "myvm001VmSize": "Basic_A1",
     "myvm001VnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'testvnet01')]",
     "myvm001SubnetRef": "[concat(variables('myvm001VnetID'), '/subnets/', variables('testvnet01Subnet1Name'))]",
     "myvm001StorageAccountContainerName": "vhds",
@@ -62,7 +62,8 @@
       "apiVersion": "2015-06-15",
       "dependsOn": [],
       "tags": {
-        "displayName": "1234vms"
+        "displayName": "1234vms",
+        "ARMAutomated": "Yes"
       },
       "properties": {
         "accountType": "[parameters('1234vmsType')]"
@@ -75,7 +76,8 @@
       "apiVersion": "2015-06-15",
       "dependsOn": [],
       "tags": {
-        "displayName": "testvnet01"
+        "displayName": "testvnet01",
+        "ARMAutomated": "Yes"      
       },
       "properties": {
         "addressSpace": {
@@ -109,7 +111,8 @@
           "[resourceId('Microsoft.Network/publicIPAddresses', variables('pip-vm001Name'))]"
       ],
       "tags": {
-        "displayName": "myvm001Nic"
+        "displayName": "myvm001Nic",
+        "ARMAutomated": "Yes"
       },
       "properties": {
         "ipConfigurations": [
@@ -138,7 +141,8 @@
         "[resourceId('Microsoft.Network/networkInterfaces', variables('myvm001NicName'))]"
       ],
       "tags": {
-        "displayName": "myvm001"
+        "displayName": "myvm001",
+        "ARMAutomated": "Yes"        
       },
       "properties": {
         "hardwareProfile": {
@@ -181,7 +185,8 @@
           "apiVersion": "2015-06-15",
           "dependsOn": [ ],
           "tags": {
-              "displayName": "pip-vm001"
+              "displayName": "pip-vm001",
+              "ARMAutomated": "Yes"
           },
           "properties": {
               "publicIPAllocationMethod": "Dynamic",
