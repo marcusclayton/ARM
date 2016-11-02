@@ -1,21 +1,15 @@
-$env:PSModulePath.Split(';')
+#Check Module Path: Before
+write-verbose "$($env:PSModulePath.Split(';'))"
 
-<#$modules = Get-Module azure* -listavailable
-$modules.count
+$azure1 = ";" + "C:\Program Files (x86)\Microsoft SDKs\Azure\PowerShell\ResourceManager\AzureResourceManager"
+$azure2 = ";" + "C:\Program Files (x86)\Microsoft SDKs\Azure\PowerShell\Storage"
+$azure3 = ";" + "C:\Program Files (x86)\Microsoft SDKs\Azure\PowerShell\ServiceManagement"
 
-Import-Module Azure -ErrorAction SilentlyContinue
+$env:PSModulePath=$env:PSModulePath+"$azure1"+"$azure2"+"$azure3"
 
-try {
-    [Microsoft.Azure.Common.Authentication.AzureSession]::ClientFactory.AddUserAgent("VSAzureTools-$UI$($host.name)".replace(" ","_"), "2.9.5")
-} catch { }
-
-Set-StrictMode -Version 3
-
-#>
-
-<#Import-Module azure -verbose
+#Check Module Path: After
+write-verbose "$($env:PSModulePath.Split(';'))"
 
 Get-AzureRmResourceGroup
 $groups = Get-AzureRmResourceGroup
-$groups.count
-#>
+write-verbose "$($groups.count)"
