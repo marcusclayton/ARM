@@ -2,7 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "1234vmsType": {
+    "1432vmsType": {
       "type": "string",
       "defaultValue": "Standard_LRS",
       "allowedValues": [
@@ -38,7 +38,7 @@
       }
   },
   "variables": {
-    "1234vmsName": "[concat('1234vms', uniqueString(resourceGroup().id))]",
+    "1432vmsName": "[concat('1432vms', uniqueString(resourceGroup().id))]",
     "testvnet01Prefix": "10.0.0.0/16",
     "testvnet01Subnet1Name": "Subnet-1",
     "testvnet01Subnet1Prefix": "10.0.0.0/24",
@@ -52,21 +52,21 @@
     "myvm001SubnetRef": "[concat(variables('myvm001VnetID'), '/subnets/', variables('testvnet01Subnet1Name'))]",
     "myvm001StorageAccountContainerName": "vhds",
     "myvm001NicName": "[concat(parameters('myvm001Name'), 'NetworkInterface')]",
-      "pip-vm001Name": "pip-vm001"
+    "pip-vm001Name": "pip-vm001"
   },
   "resources": [
     {
-      "name": "[variables('1234vmsName')]",
+      "name": "[variables('1432vmsName')]",
       "type": "Microsoft.Storage/storageAccounts",
       "location": "[resourceGroup().location]",
       "apiVersion": "2015-06-15",
       "dependsOn": [],
       "tags": {
-        "displayName": "1234vms",
+        "displayName": "1432vms",
         "ARMAutomated": "Yes"
       },
       "properties": {
-        "accountType": "[parameters('1234vmsType')]"
+        "accountType": "[parameters('1432vmsType')]"
       }
     },
     {
@@ -137,7 +137,7 @@
       "location": "[resourceGroup().location]",
       "apiVersion": "2015-06-15",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('1234vmsName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('1432vmsName'))]",
         "[resourceId('Microsoft.Network/networkInterfaces', variables('myvm001NicName'))]"
       ],
       "tags": {
@@ -163,7 +163,7 @@
           "osDisk": {
             "name": "myvm001OSDisk",
             "vhd": {
-              "uri": "[concat('https://', variables('1234vmsName'), '.blob.core.windows.net/', variables('myvm001StorageAccountContainerName'), '/', variables('myvm001OSDiskName'), '.vhd')]"
+              "uri": "[concat('https://', variables('1432vmsName'), '.blob.core.windows.net/', variables('myvm001StorageAccountContainerName'), '/', variables('myvm001OSDiskName'), '.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
