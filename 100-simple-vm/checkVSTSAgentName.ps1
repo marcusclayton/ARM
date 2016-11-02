@@ -1,4 +1,4 @@
-if($env:AGENT_NAME -like '*HOSTED*'){
+if($env:AGENT_NAME -notlike '*HOSTED*'){
 
     $azure1 = ";" + "C:\Program Files (x86)\Microsoft SDKs\Azure\PowerShell\ResourceManager\AzureResourceManager"
     $azure2 = ";" + "C:\Program Files (x86)\Microsoft SDKs\Azure\PowerShell\Storage"
