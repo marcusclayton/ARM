@@ -1,4 +1,6 @@
-$modules = Get-Module azure* -listavailable
+$env:PSModulePath.Split(';')
+
+<#$modules = Get-Module azure* -listavailable
 $modules.count
 
 Import-Module Azure -ErrorAction SilentlyContinue
@@ -9,7 +11,7 @@ try {
 
 Set-StrictMode -Version 3
 
-
+#>
 
 <#Import-Module azure -verbose
 
