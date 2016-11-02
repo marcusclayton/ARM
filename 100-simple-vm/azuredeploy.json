@@ -31,7 +31,11 @@
         "2012-R2-Datacenter",
         "2016-Datacenter-with-Containers"
       ]
-    }
+    },
+      "pip-vm001DnsName": {
+          "type": "string",
+          "minLength": 1
+      }
   },
   "variables": {
     "1234vmsName": "[concat('1234vms', uniqueString(resourceGroup().id))]",
@@ -47,7 +51,8 @@
     "myvm001VnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'testvnet01')]",
     "myvm001SubnetRef": "[concat(variables('myvm001VnetID'), '/subnets/', variables('testvnet01Subnet1Name'))]",
     "myvm001StorageAccountContainerName": "vhds",
-    "myvm001NicName": "[concat(parameters('myvm001Name'), 'NetworkInterface')]"
+    "myvm001NicName": "[concat(parameters('myvm001Name'), 'NetworkInterface')]",
+      "pip-vm001Name": "pip-vm001"
   },
   "resources": [
     {
@@ -100,7 +105,8 @@
       "location": "[resourceGroup().location]",
       "apiVersion": "2015-06-15",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/virtualNetworks', 'testvnet01')]"
+        "[resourceId('Microsoft.Network/virtualNetworks', 'testvnet01')]",
+          "[resourceId('Microsoft.Network/publicIPAddresses', variables('pip-vm001Name'))]"
       ],
       "tags": {
         "displayName": "myvm001Nic"
@@ -113,7 +119,10 @@
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
                 "id": "[variables('myvm001SubnetRef')]"
-              }
+              },
+                "publicIPAddress": {
+                    "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('pip-vm001Name'))]"
+                }
             }
           }
         ]
@@ -164,7 +173,23 @@
           ]
         }
       }
-    }
+    },
+      {
+          "name": "[variables('pip-vm001Name')]",
+          "type": "Microsoft.Network/publicIPAddresses",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2015-06-15",
+          "dependsOn": [ ],
+          "tags": {
+              "displayName": "pip-vm001"
+          },
+          "properties": {
+              "publicIPAllocationMethod": "Dynamic",
+              "dnsSettings": {
+                  "domainNameLabel": "[parameters('pip-vm001DnsName')]"
+              }
+          }
+      }
   ],
   "outputs": {
     "result": {
