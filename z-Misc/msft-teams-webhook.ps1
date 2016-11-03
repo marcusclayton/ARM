@@ -1,7 +1,10 @@
-﻿function Invoke-MsftTeamsWebhook{
-    Param(
-        $uri
-    )
+﻿param(
+    [parameter()]
+    [ValidateSet('Uri')]
+    [string]
+    $Uri
+)
+
 
     # these values would be retrieved from or set by an application
     $status = 'success'
@@ -37,6 +40,3 @@
 
     Invoke-RestMethod -uri $uri -Method Post -body $body -ContentType 'application/json'
 
-}
-
-Invoke-MsftTeamsWebhook -uri $uri
