@@ -1,6 +1,5 @@
 ﻿param(
     [parameter()]
-    [ValidateSet('Uri')]
     [string]
     $Uri
 )
