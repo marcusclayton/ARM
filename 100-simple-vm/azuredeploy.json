@@ -81,7 +81,7 @@
       "dependsOn": [],
       "tags": {
         "displayName": "testvnet01",
-        "ARMAutomated": "Yes"      
+        "ARMAutomated": "Yes"
       },
       "properties": {
         "addressSpace": {
@@ -146,7 +146,7 @@
       ],
       "tags": {
         "displayName": "myvm001",
-        "ARMAutomated": "Yes"        
+        "ARMAutomated": "Yes"
       },
       "properties": {
         "hardwareProfile": {
