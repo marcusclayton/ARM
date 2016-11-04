@@ -51,7 +51,7 @@
     "myvm001ImagePublisher": "MicrosoftWindowsServer",
     "myvm001ImageOffer": "WindowsServer",
     "myvm001OSDiskName": "myvm001OSDisk",
-    "myvm001VmSize": "Basic_A1",
+    "myvm001VmSize": "Basic_A0",
     "myvm001VnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'testvnet01')]",
     "myvm001SubnetRef": "[concat(variables('myvm001VnetID'), '/subnets/', variables('testvnet01Subnet1Name'))]",
     "myvm001StorageAccountContainerName": "vhds",
